@@ -8,6 +8,6 @@ const aiRouter = express.Router();
 aiRouter.post('/resume-review', upload.single('resume'), auth, resumeReview);
 aiRouter.post("/skill-growth", upload.single("resume"), auth,skillGrowth);
 aiRouter.post("/resume-builder",auth, CreateAiResume);
-aiRouter.post("/update-resume", upload.single("resume"), auth, generateEnhancedResume);
+aiRouter.post("/enhance-resume", upload.single("resume"), auth, generateEnhancedResume);
 
 export default aiRouter

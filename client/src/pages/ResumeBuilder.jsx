@@ -1,6 +1,14 @@
-// ResumeBuilder.jsx (Improved UI)
 import React, { useState } from "react";
-import { FileText, Sparkles, Download, Eye, Mail, Phone, Linkedin, Globe } from "lucide-react";
+import {
+  FileText,
+  Sparkles,
+  Download,
+  Eye,
+  Mail,
+  Phone,
+  Linkedin,
+  Globe,
+} from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useAuth } from "@clerk/clerk-react";
@@ -29,7 +37,8 @@ export default function ResumeBuilder() {
 
   const { getToken } = useAuth();
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -172,11 +181,35 @@ export default function ResumeBuilder() {
 
       {/* Right: Preview */}
       <div className="bg-white shadow-lg rounded-xl p-6 border flex flex-col">
-        <div className="flex items-center gap-3 mb-4">
-          <FileText className="w-5 h-5 text-[#00DA83]" />
-          <h2 className="text-xl font-semibold">AI Enhanced Preview</h2>
+        {/* Header with action buttons */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <FileText className="w-5 h-5 text-[#00DA83]" />
+            <h2 className="text-xl font-semibold">AI Enhanced Preview</h2>
+          </div>
+
+          {pdfUrl && (
+            <div className="flex gap-2">
+              <a
+                href={pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3 py-1.5 bg-[#009BB3] text-white rounded-md text-sm"
+              >
+                <Eye className="w-4" /> View
+              </a>
+              <a
+                href={pdfUrl}
+                download={`${form.fullName || "resume"}.pdf`}
+                className="flex items-center gap-2 px-3 py-1.5 bg-[#00DA83] text-white rounded-md text-sm"
+              >
+                <Download className="w-4" /> Download
+              </a>
+            </div>
+          )}
         </div>
 
+        {/* Resume content */}
         {!content ? (
           <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
             Fill in details & click <b>Generate Resume</b> to see the preview.
@@ -205,29 +238,6 @@ export default function ResumeBuilder() {
 
             <div className="mt-4 bg-gray-50 p-4 rounded text-sm">
               <Markdown>{content}</Markdown>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-3 mt-4">
-              {pdfUrl && (
-                <>
-                  <a
-                    href={pdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 bg-[#009BB3] text-white rounded-md"
-                  >
-                    <Eye className="w-4" /> View
-                  </a>
-                  <a
-                    href={pdfUrl}
-                    download={`${form.fullName || "resume"}.pdf`}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#00DA83] text-white rounded-md"
-                  >
-                    <Download className="w-4" /> Download
-                  </a>
-                </>
-              )}
             </div>
           </div>
         )}

@@ -59,6 +59,10 @@ export const resumeReview = async (req, res) => {
 
 export const skillGrowth = async (req, res) => {
   try {
+    const plan = req.plan;
+    const free_usage = req.free_usage;
+    const { userId } = req.auth();
+
     if (!req.file) {
       return res.json({ success: false, message: "No resume uploaded" });
     }
@@ -100,6 +104,7 @@ export const CreateAiResume = async (req, res) => {
   try {
     const { userId } = req.auth ? req.auth() : { userId: null };
     const form = req.body || {};
+    const plan = req.plan;
 
     if (plan !== 'premium') {
       return res.json({ success: false, message: 'This feature is only available for premium subscribers.' });
@@ -205,6 +210,8 @@ Be concise, bullet-heavy where appropriate, ATS-friendly, and produce final outp
 };
 
 export const generateEnhancedResume = async (req, res) => {
+  const { plan } = req;
+  
   try {
     const { userId } = req.auth ? req.auth() : { userId: null };
     const resumeFile = req.file;

@@ -8,7 +8,7 @@ const navItems = [
   { to: '/ai/resume-builder', label: 'Resume Builder', Icon: FileText },
   { to: '/ai/skill-growth', label: 'Skill Growth', Icon: Hash },
   { to: '/ai/review-resume', label: 'Review Resume', Icon: FileText },
-  { to: '/ai/update-resume', label: 'Update Resume', Icon: Upload },
+  { to: '/ai/enhance-resume', label: 'Enhance Resume', Icon: Upload },
 ];
 
 export default function Sidebar({ sidebar, setSidebar }) {

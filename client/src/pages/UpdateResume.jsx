@@ -1,4 +1,9 @@
-import { FileText, Sparkles } from "lucide-react";
+import {
+  FileText,
+  Sparkles,
+  Download,
+  Eye,
+} from "lucide-react";
 import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -13,6 +18,7 @@ export default function UpdateResume() {
   const [skills, setSkills] = useState("");
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
+  const [pdfUrl, setPdfUrl] = useState("");
 
   const { getToken } = useAuth();
 
@@ -35,6 +41,7 @@ export default function UpdateResume() {
 
       if (data.success) {
         setContent(data.content);
+        setPdfUrl(data.url || "");
         toast.success("Resume updated successfully!");
       } else {
         toast.error(data.message || "Update failed");
@@ -111,11 +118,35 @@ export default function UpdateResume() {
 
       {/* Right: Preview */}
       <div className="bg-white shadow-lg rounded-xl p-6 border flex flex-col">
-        <div className="flex items-center gap-3 mb-4">
-          <FileText className="w-5 h-5 text-[#00DA83]" />
-          <h2 className="text-xl font-semibold">AI Updated Preview</h2>
+        {/* Header with buttons */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <FileText className="w-5 h-5 text-[#00DA83]" />
+            <h2 className="text-xl font-semibold">AI Updated Preview</h2>
+          </div>
+
+          {pdfUrl && (
+            <div className="flex gap-2">
+              <a
+                href={pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3 py-1.5 bg-[#009BB3] text-white rounded-md text-sm"
+              >
+                <Eye className="w-4" /> View
+              </a>
+              <a
+                href={pdfUrl}
+                download="updated_resume.pdf"
+                className="flex items-center gap-2 px-3 py-1.5 bg-[#00DA83] text-white rounded-md text-sm"
+              >
+                <Download className="w-4" /> Download
+              </a>
+            </div>
+          )}
         </div>
 
+        {/* Content */}
         {!content ? (
           <div className="flex-1 flex items-center justify-center text-gray-400 text-sm text-center">
             Upload a resume, add role & skills, then click <b>Update Resume</b> to see results.
