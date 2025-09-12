@@ -193,3 +193,81 @@ Be concise, bullet-heavy where appropriate, ATS-friendly, and produce final outp
     return res.status(500).json({ success: false, message: error.message || String(error) });
   }
 };
+
+export const updateResume = async (req, res) => {
+  try {
+    const { userId } = req.auth ? req.auth() : { userId: null };
+    const resumeFile = req.file;
+    const { role = "", skills = "" } = req.body;
+
+    if (!resumeFile) return res.json({ success: false, message: "No resume uploaded" });
+
+    // Read PDF content
+    const dataBuffer = fs.readFileSync(resumeFile.path); // <-- THIS WAS MISSING
+    const pdfData = await pdf(dataBuffer);
+
+    // AI prompt for updating resume
+    const prompt = `
+You are a career coach and expert resume writer. Update the following resume with:
+1. Highlighted role: ${role}
+2. Key skills: ${skills}
+3. Format in ATS-friendly bullets
+4. Keep professional tone and concise
+
+Resume Content:
+${pdfData.text}
+    `;
+
+    const aiResponse = await AI.chat.completions.create({
+      model: "gemini-2.0-flash",
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.25,
+      max_tokens: 1200,
+    });
+
+    const enhancedText = aiResponse.choices?.[0]?.message?.content || "No response";
+
+    // Create PDF
+    const uploadDir = path.join(process.cwd(), "uploads");
+    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+
+    const pdfFilename = `${Date.now()}-updated-resume.pdf`;
+    const pdfPath = path.join(uploadDir, pdfFilename);
+
+    const doc = new PDFDocument({ margin: 40 });
+    const stream = fs.createWriteStream(pdfPath);
+    doc.pipe(stream);
+
+    doc.fontSize(18).text(role || "Updated Resume", { align: "center" });
+    doc.moveDown();
+    doc.fontSize(11).text(enhancedText, { align: "left" });
+    doc.end();
+
+    await new Promise((resolve, reject) => {
+      stream.on("finish", resolve);
+      stream.on("error", reject);
+    });
+
+    // Upload PDF to Cloudinary
+    const uploadResult = await cloudinary.v2.uploader.upload(pdfPath, {
+      folder: "resumes",
+      resource_type: "raw",
+    });
+
+    // Insert/update DB
+    await sql`
+      INSERT INTO resumes (user_id, prompt, content, type, file_url, cloudinary_id)
+      VALUES (${userId}, 'Resume updated via update-resume', ${enhancedText}, 'updated-resume', ${uploadResult.secure_url}, ${uploadResult.public_id})
+    `;
+
+    // Cleanup local file
+    try { fs.unlinkSync(pdfPath); } catch(e) {}
+    try { fs.unlinkSync(resumeFile.path); } catch(e) {}
+
+    res.json({ success: true, content: enhancedText, url: uploadResult.secure_url });
+
+  } catch (error) {
+    console.error("updateResume error:", error);
+    res.status(500).json({ success: false, message: error.message || "Server error" });
+  }
+};

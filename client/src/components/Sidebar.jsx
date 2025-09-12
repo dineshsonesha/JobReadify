@@ -1,14 +1,14 @@
 import { Protect, useClerk, useUser } from '@clerk/clerk-react';
-import { FileText, Hash, House, Users, ArrowRight, LogOut } from 'lucide-react';
+import { FileText, Hash, House, LogOut, Upload } from 'lucide-react'; // 👈 Added Upload icon
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const navItems = [
   { to: '/ai/dashboard', label: 'Dashboard', Icon: House },
-  { to: '/ai/role-suggestions', label: 'Role Suggestions', Icon: Users },
-  { to: '/ai/skill-growth', label: 'Skill Growth', Icon: Hash },
   { to: '/ai/resume-builder', label: 'Resume Builder', Icon: FileText },
+  { to: '/ai/skill-growth', label: 'Skill Growth', Icon: Hash },
   { to: '/ai/review-resume', label: 'Review Resume', Icon: FileText },
+  { to: '/ai/update-resume', label: 'Update Resume', Icon: Upload }, // 👈 New menu item
 ];
 
 export default function Sidebar({ sidebar, setSidebar }) {

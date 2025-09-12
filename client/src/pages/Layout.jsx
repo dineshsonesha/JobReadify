@@ -26,7 +26,7 @@ export default function Layout() {
       </nav>
       <div className='flex-1 w-full flex h-[calc(100vh-64px)]'>
         <Sidebar sidebar={siderbar} setSidebar={setSidebar} />
-        <div className='flex-1 bg-[#F4F7FB]'>
+        <div className='flex-1 bg-[#F4F7FB] overflow-y-auto'>
           <Outlet />
         </div>
       </div>

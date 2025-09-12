@@ -1,101 +1,130 @@
-import React, { useState } from "react";
-import { Gem, Sparkles, FileText, PlusCircle } from "lucide-react";
-import { Protect } from "@clerk/clerk-react";
+// Dashboard.jsx
+import React, { useEffect, useState } from "react";
+import { FileText, Sparkles, Download, Eye } from "lucide-react";
+import { Protect, useAuth } from "@clerk/clerk-react";
+import axios from "axios";
+import toast from "react-hot-toast";
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 export default function Dashboard() {
-  const [creations, setCreations] = useState([]);
-  const templates = [
-    {
-      id: 1,
-      name: "Modern Resume",
-      description: "Clean and ATS-friendly format for job applications.",
-    },
-    {
-      id: 2,
-      name: "Creative Resume",
-      description: "Stylish layout with highlights for projects & skills.",
-    },
-    {
-      id: 3,
-      name: "Minimal Resume",
-      description: "Simple, elegant design for a professional touch.",
-    },
-  ];
+  const [resumes, setResumes] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { getToken } = useAuth();
+
+  const getDashboardData = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get("/api/user/get-user-resumes", {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      });
+
+      if (data.success) {
+        setResumes(data.resumes);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getDashboardData();
+  }, []);
 
   return (
-    <div className="h-full overflow-y-scroll p-6">
-      {/* Stats Cards */}
-      <div className="flex justify-start gap-4 flex-wrap">
-        {/* Total Creations */}
-        <div className="flex justify-between items-center w-72 p-4 px-6 rounded-xl bg-white border border-gray-200">
-          <div className="text-slate-600">
-            <p className="text-sm">Total Creations</p>
-            <h2 className="text-xl font-semibold">{creations.length}</h2>
-          </div>
-          <div className="w-10 h-10 flex items-center justify-center text-white rounded-lg bg-gradient-to-br from-[#3588F2] to-[#0BB0D7]">
-            <Sparkles className="w-5 text-white" />
-          </div>
-        </div>
-
-        {/* Active Plan */}
-        <div className="flex justify-between items-center w-72 p-4 px-6 rounded-xl bg-white border border-gray-200">
-          <div className="text-slate-600">
-            <p className="text-sm">Active Plan</p>
-            <h2 className="text-xl font-semibold">
-              <Protect plan="premium" fallback="Free">
-                Premium
-              </Protect>
-            </h2>
-          </div>
-          <div className="w-10 h-10 flex items-center justify-center text-white rounded-lg bg-gradient-to-br from-[#FF61C5] to-[#9E53EE]">
-            <Gem className="w-5 text-white" />
-          </div>
-        </div>
-      </div>
-
-      {/* Templates Section */}
-      <div className="mt-10">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-slate-700">Choose a Template</h2>
-          <button className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:scale-105 transition">
-            <PlusCircle className="w-4 h-4" />
-            Create New Resume
-          </button>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {templates.map((template) => (
-            <div
-              key={template.id}
-              className="p-6 rounded-xl bg-white border border-gray-200 shadow hover:shadow-lg transition cursor-pointer"
-            >
-              <FileText className="w-10 h-10 text-indigo-600 mb-4" />
-              <h3 className="text-lg font-semibold">{template.name}</h3>
-              <p className="text-sm text-gray-500 mb-4">{template.description}</p>
-              <button className="text-indigo-600 font-medium hover:underline">
-                Use Template
-              </button>
+    <div className="min-h-screen p-6 bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Cards Row */}
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+        {/* Total Resumes Card */}
+        <div className="p-6 rounded-2xl bg-white/70 backdrop-blur-lg border border-gray-200 shadow-md hover:shadow-lg transition-all duration-200">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-sm text-gray-500">Total Resumes</p>
+              <h2 className="text-3xl font-bold text-slate-700">{resumes.length}</h2>
             </div>
-          ))}
+            <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 text-white">
+              <Sparkles className="w-6 h-6" />
+            </div>
+          </div>
+        </div>
+
+        {/* Active Plan Card */}
+        <div className="p-6 rounded-2xl bg-white/70 backdrop-blur-lg border border-gray-200 shadow-md hover:shadow-lg transition-all duration-200">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-sm text-gray-500">Active Plan</p>
+              <h2 className="text-2xl font-bold text-slate-700">
+                <Protect plan="premium" fallback="Free">
+                  Premium
+                </Protect>
+              </h2>
+            </div>
+            <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br from-pink-500 to-violet-500 text-white">
+              <FileText className="w-6 h-6" />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Recent Creations */}
-      {loading ? (
-        <div className="flex items-center justify-center h-3/4">
-          <div className="w-11 h-11 rounded-full border-3 border-purple-500 border-t-transparent animate-spin"></div>
-        </div>
-      ) : (
-        <div className="space-y-3 mt-10">
-          <p className="mb-4 text-lg font-semibold text-slate-700">
-            Recent Creations
-          </p>
-          {creations.length > 0 ? (
-            creations.map((item) => <CreationItem key={item.id} item={item} />)
-          ) : (
-            <p className="text-gray-500 text-sm">No creations yet.</p>
-          )}
-        </div>
-      )}
+      {/* Resume List */}
+      <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-6 border border-gray-200 shadow-md">
+        <h3 className="text-xl font-semibold text-slate-700 mb-4">Recent Resumes</h3>
+
+        {loading ? (
+          <div className="space-y-3 animate-pulse">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-16 bg-gray-200 rounded-lg"
+              ></div>
+            ))}
+          </div>
+        ) : resumes.length === 0 ? (
+          <p className="text-gray-500">No resumes created yet.</p>
+        ) : (
+          <div className="space-y-4">
+            {resumes.map((resume) => (
+              <div
+                key={resume.id}
+                className="flex items-center justify-between p-4 rounded-xl border bg-white shadow-sm hover:shadow-md transition-all"
+              >
+                <div>
+                  <h4 className="font-semibold text-slate-700 capitalize">
+                    {resume.type.replace("-", " ")}
+                  </h4>
+                  <p className="text-xs text-gray-500">
+                    {new Date(resume.created_at).toLocaleString()}
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  {resume.file_url && (
+                    <>
+                      <a
+                        href={resume.file_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-1 px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                      >
+                        <Eye className="w-4 h-4" /> View
+                      </a>
+                      <a
+                        href={resume.file_url}
+                        download={`${resume.type}.pdf`}
+                        className="flex items-center gap-1 px-3 py-2 text-sm border rounded-lg hover:bg-gray-50 transition"
+                      >
+                        <Download className="w-4 h-4" /> Download
+                      </a>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

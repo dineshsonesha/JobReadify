@@ -1,6 +1,6 @@
-// ResumeBuilder.jsx (updated)
+// ResumeBuilder.jsx (Improved UI)
 import React, { useState } from "react";
-import { FileText, Sparkles } from "lucide-react";
+import { FileText, Sparkles, Download, Eye, Mail, Phone, Linkedin, Globe } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useAuth } from "@clerk/clerk-react";
@@ -22,7 +22,7 @@ export default function ResumeBuilder() {
     certifications: "",
     achievements: "",
   });
-  const [preview, setPreview] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
@@ -48,10 +48,6 @@ export default function ResumeBuilder() {
 
       setContent(data.content || "");
       setPdfUrl(data.url || "");
-      setPreview(true);
-
-      // open preview in new tab (optional)
-      if (data.url) window.open(data.url, "_blank");
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong");
@@ -61,84 +57,177 @@ export default function ResumeBuilder() {
   };
 
   return (
-    <div className="h-full overflow-y-scroll p-6 flex items-start gap-4 text-slate-700">
-      {/* Left: form */}
-      <form onSubmit={handleSubmit} className="w-full max-w-lg p-5 bg-white border rounded-lg shadow-sm">
-        <div className="flex items-center gap-3">
-          <Sparkles className="w-6 text-primary" />
-          <h1 className="text-xl font-semibold">Resume Builder</h1>
+    <div className="min-h-screen p-6 grid grid-cols-1 lg:grid-cols-2 gap-6 bg-gray-50 text-slate-700">
+      {/* Left: Form */}
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-lg rounded-xl p-6 border border-gray-200 space-y-5"
+      >
+        <div className="flex items-center gap-3 mb-2">
+          <Sparkles className="w-6 text-[#00DA83]" />
+          <h1 className="text-2xl font-semibold">Build Your Resume</h1>
         </div>
 
-        <div className="mt-6 space-y-3">
-          <input name="fullName" value={form.fullName} onChange={handleChange} placeholder="Full name" required className="w-full p-2 border rounded" />
-          <input name="email" value={form.email} onChange={handleChange} placeholder="Email" required className="w-full p-2 border rounded" />
-          <input name="phone" value={form.phone} onChange={handleChange} placeholder="Phone" className="w-full p-2 border rounded" />
-          <input name="linkedin" value={form.linkedin} onChange={handleChange} placeholder="LinkedIn URL (optional)" className="w-full p-2 border rounded" />
-          <input name="portfolio" value={form.portfolio} onChange={handleChange} placeholder="Portfolio / GitHub (optional)" className="w-full p-2 border rounded" />
-          <textarea name="education" value={form.education} onChange={handleChange} placeholder="Education" rows={2} className="w-full p-2 border rounded" />
-          <textarea name="skills" value={form.skills} onChange={handleChange} placeholder="Skills (comma separated)" rows={2} className="w-full p-2 border rounded" />
-          <textarea name="experience" value={form.experience} onChange={handleChange} placeholder="Experience (leave empty if none)" rows={3} className="w-full p-2 border rounded" />
-          <textarea name="certifications" value={form.certifications} onChange={handleChange} placeholder="Certifications (optional)" rows={2} className="w-full p-2 border rounded" />
-          <textarea name="achievements" value={form.achievements} onChange={handleChange} placeholder="Achievements (optional)" rows={2} className="w-full p-2 border rounded" />
-          <textarea name="summary" value={form.summary} onChange={handleChange} placeholder="Professional summary (optional)" rows={2} className="w-full p-2 border rounded" />
+        {/* Personal Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            name="fullName"
+            value={form.fullName}
+            onChange={handleChange}
+            placeholder="Full name"
+            required
+            className="p-2 border rounded"
+          />
+          <input
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Email"
+            required
+            className="p-2 border rounded"
+          />
+          <input
+            name="phone"
+            value={form.phone}
+            onChange={handleChange}
+            placeholder="Phone"
+            className="p-2 border rounded"
+          />
+          <input
+            name="linkedin"
+            value={form.linkedin}
+            onChange={handleChange}
+            placeholder="LinkedIn URL"
+            className="p-2 border rounded"
+          />
+          <input
+            name="portfolio"
+            value={form.portfolio}
+            onChange={handleChange}
+            placeholder="Portfolio / GitHub"
+            className="p-2 border rounded"
+          />
         </div>
 
-        <button type="submit" disabled={loading} className="w-full mt-4 py-2 bg-gradient-to-r from-indigo-700 to-purple-500 text-white rounded flex items-center justify-center gap-2">
+        {/* Other Details */}
+        <textarea
+          name="summary"
+          value={form.summary}
+          onChange={handleChange}
+          placeholder="Professional Summary"
+          rows={3}
+          className="w-full p-2 border rounded"
+        />
+        <textarea
+          name="skills"
+          value={form.skills}
+          onChange={handleChange}
+          placeholder="Skills (comma separated)"
+          rows={2}
+          className="w-full p-2 border rounded"
+        />
+        <textarea
+          name="experience"
+          value={form.experience}
+          onChange={handleChange}
+          placeholder="Experience"
+          rows={3}
+          className="w-full p-2 border rounded"
+        />
+        <textarea
+          name="education"
+          value={form.education}
+          onChange={handleChange}
+          placeholder="Education"
+          rows={2}
+          className="w-full p-2 border rounded"
+        />
+        <textarea
+          name="certifications"
+          value={form.certifications}
+          onChange={handleChange}
+          placeholder="Certifications"
+          rows={2}
+          className="w-full p-2 border rounded"
+        />
+        <textarea
+          name="achievements"
+          value={form.achievements}
+          onChange={handleChange}
+          placeholder="Achievements"
+          rows={2}
+          className="w-full p-2 border rounded"
+        />
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-2 bg-gradient-to-r from-[#00DA83] to-[#009BB3] text-white rounded-md flex items-center justify-center gap-2"
+        >
           <FileText className="w-4" />
           {loading ? "Generating..." : "Generate Resume"}
         </button>
       </form>
 
-      {/* Right: AI Assistant and preview */}
-      <div className="w-full max-w-lg p-5 bg-white border rounded-lg shadow-sm min-h-[400px]">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <FileText className="w-5 h-5 text-primary" />
-            <h1 className="text-xl font-semibold">AI Assistant</h1>
-          </div>
+      {/* Right: Preview */}
+      <div className="bg-white shadow-lg rounded-xl p-6 border flex flex-col">
+        <div className="flex items-center gap-3 mb-4">
+          <FileText className="w-5 h-5 text-[#00DA83]" />
+          <h2 className="text-xl font-semibold">AI Enhanced Preview</h2>
         </div>
 
-        {!preview ? (
-          <div className="flex-1 flex items-center justify-center h-full">
-            <p className="text-gray-400 text-sm">Fill the form and click <b>Generate Resume</b> to see AI suggestions & PDF downloads.</p>
+        {!content ? (
+          <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
+            Fill in details & click <b>Generate Resume</b> to see the preview.
           </div>
         ) : (
-          <div className="mt-4 text-sm text-slate-700 space-y-3">
+          <div className="flex-1 overflow-y-auto">
             <h2 className="text-lg font-bold">{form.fullName}</h2>
-            <p className="text-gray-600">{form.email} {form.phone && ` | ${form.phone}`}</p>
+            <p className="text-gray-600 flex items-center gap-2">
+              <Mail className="w-4" /> {form.email}
+              {form.phone && (
+                <>
+                  <span>|</span> <Phone className="w-4" /> {form.phone}
+                </>
+              )}
+            </p>
+            {form.linkedin && (
+              <p className="text-gray-600 flex items-center gap-2 mt-1">
+                <Linkedin className="w-4" /> {form.linkedin}
+              </p>
+            )}
+            {form.portfolio && (
+              <p className="text-gray-600 flex items-center gap-2 mt-1">
+                <Globe className="w-4" /> {form.portfolio}
+              </p>
+            )}
 
-            <div>
-              <h3 className="font-semibold mt-3">Enhanced Resume</h3>
-              <pre className="whitespace-pre-wrap text-sm bg-gray-50 p-3 rounded"><Markdown>{content}</Markdown></pre>
+            <div className="mt-4 bg-gray-50 p-4 rounded text-sm">
+              <Markdown>{content}</Markdown>
             </div>
 
-            {/* Buttons */}
-            <div className="flex gap-2 mt-3">
+            {/* Action Buttons */}
+            <div className="flex gap-3 mt-4">
               {pdfUrl && (
                 <>
-                  <button
-                    onClick={() => window.open(pdfUrl, "_blank")}
-                    className="px-3 py-2 border rounded hover:bg-gray-50"
+                  <a
+                    href={pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#009BB3] text-white rounded-md"
                   >
-                    View PDF
-                  </button>
-
+                    <Eye className="w-4" /> View
+                  </a>
                   <a
                     href={pdfUrl}
                     download={`${form.fullName || "resume"}.pdf`}
-                    className="px-3 py-2 border rounded hover:bg-gray-50"
-                    target="_blank"
-                    rel="noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#00DA83] text-white rounded-md"
                   >
-                    Download PDF
+                    <Download className="w-4" /> Download
                   </a>
                 </>
               )}
-            </div>
-
-            {/* quick tips */}
-            <div className="text-xs text-gray-500 mt-4">
-              <p>Tip: If you had no experience, the AI creates project-based bullets. Add more certifications or project links for a stronger result.</p>
             </div>
           </div>
         )}
