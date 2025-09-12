@@ -30,7 +30,7 @@ export default function Features() {
         "Identify missing skills and receive personalized learning paths to enhance your profile.",
       icon: Target,
       bg: { from: "#2563EB", to: "#1D4ED8" },
-      path: "/ai/skills-growth",
+      path: "/ai/skill-growth",
     },
     {
       title: "Update Resume",

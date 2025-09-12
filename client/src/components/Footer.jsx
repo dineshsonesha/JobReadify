@@ -15,7 +15,7 @@ export default function Footer() {
                         className="flex items-center gap-2 text-2xl sm:text-3xl font-bold text-primary select-none cursor-pointer"
                     >
                         <Sparkles className="w-8 h-8 text-primary" />
-                        ResumeGenix
+                        JobReadify
                     </h1>
                     <p className="mt-6 text-sm leading-relaxed">
                         Build smarter resumes with <span className="font-semibold text-primary">AI-powered insights</span>.  
@@ -31,7 +31,6 @@ export default function Footer() {
                             <li><Link to={"/"}>Home</Link></li>
                             <li><Link to={"/about"}>About Us</Link></li>
                             <li><Link to={"/features"}>Features</Link></li>
-                            <li><Link to={"/contact"}>Contact</Link></li>
                             <li><Link to={"/privacy"}>Privacy Policy</Link></li>
                         </ul>
                     </div>

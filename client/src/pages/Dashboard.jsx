@@ -1,4 +1,4 @@
-// Dashboard.jsx
+// Dashboard.jsx (Polished UI)
 import React, { useEffect, useState } from "react";
 import { FileText, Sparkles, Download, Eye } from "lucide-react";
 import { Protect, useAuth } from "@clerk/clerk-react";
@@ -18,7 +18,6 @@ export default function Dashboard() {
       const { data } = await axios.get("/api/user/get-user-resumes", {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
-
       if (data.success) {
         setResumes(data.resumes);
       } else {
@@ -26,8 +25,9 @@ export default function Dashboard() {
       }
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -35,11 +35,11 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen p-6 bg-gradient-to-br from-gray-50 to-gray-100 text-slate-700">
       {/* Cards Row */}
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-        {/* Total Resumes Card */}
-        <div className="p-6 rounded-2xl bg-white/70 backdrop-blur-lg border border-gray-200 shadow-md hover:shadow-lg transition-all duration-200">
+        {/* Total Resumes */}
+        <div className="p-6 rounded-xl bg-white/70 backdrop-blur-lg border border-gray-200 shadow-md hover:shadow-lg transition-all duration-200">
           <div className="flex justify-between items-center">
             <div>
               <p className="text-sm text-gray-500">Total Resumes</p>
@@ -51,8 +51,8 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Active Plan Card */}
-        <div className="p-6 rounded-2xl bg-white/70 backdrop-blur-lg border border-gray-200 shadow-md hover:shadow-lg transition-all duration-200">
+        {/* Active Plan */}
+        <div className="p-6 rounded-xl bg-white/70 backdrop-blur-lg border border-gray-200 shadow-md hover:shadow-lg transition-all duration-200">
           <div className="flex justify-between items-center">
             <div>
               <p className="text-sm text-gray-500">Active Plan</p>
@@ -69,17 +69,14 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Resume List */}
-      <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-6 border border-gray-200 shadow-md">
+      {/* Recent Resumes */}
+      <div className="bg-white/80 backdrop-blur-lg rounded-xl p-6 border border-gray-200 shadow-md">
         <h3 className="text-xl font-semibold text-slate-700 mb-4">Recent Resumes</h3>
 
         {loading ? (
           <div className="space-y-3 animate-pulse">
             {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="h-16 bg-gray-200 rounded-lg"
-              ></div>
+              <div key={i} className="h-16 bg-gray-200 rounded-xl"></div>
             ))}
           </div>
         ) : resumes.length === 0 ? (

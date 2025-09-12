@@ -1,3 +1,4 @@
+// SkillGrowth.jsx (Improved UI)
 import { TrendingUp, FileText } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -39,60 +40,67 @@ export default function SkillGrowth() {
   };
 
   return (
-    <div className="h-full overflow-y-scroll p-6 flex items-start flex-wrap gap-4 text-slate-700">
-      {/* Left col */}
+    <div className="min-h-screen p-6 grid grid-cols-1 lg:grid-cols-2 gap-6 bg-gray-50 text-slate-700">
+      {/* Left: Upload Form */}
       <form
         onSubmit={onSubmitHandler}
-        className="w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg"
+        className="bg-white shadow-lg max-h-[600px] rounded-xl p-6 border border-gray-200 space-y-5"
       >
         <div className="flex items-center gap-3">
           <TrendingUp className="w-6 text-[#00DA83]" />
-          <h1 className="text-xl font-semibold">Skill Growth Suggestions</h1>
+          <h1 className="text-2xl font-semibold">Skill Growth Suggestions</h1>
         </div>
-        <p className="mt-6 text-sm font-medium">Upload Resume</p>
-        <input
-          onChange={(e) => setInput(e.target.files[0])}
-          type="file"
-          accept="application/pdf"
-          className="w-full p-2 px-3 mt-2 outline-none text-sm border border-gray-300 rounded-md text-gray-600"
-          required
-        />
-        <p className="text-sm text-gray-500 font-light mt-1">
-          Supports PDF resume only.
-        </p>
+
+        {/* Upload */}
+        <div>
+          <label className="block text-sm font-medium">Upload Resume (PDF)</label>
+          <input
+            onChange={(e) => setInput(e.target.files[0])}
+            type="file"
+            accept="application/pdf"
+            className="w-full p-2 mt-2 text-sm border border-gray-300 rounded-md"
+            required
+          />
+          <p className="text-sm text-gray-500 mt-1">Supports PDF resume only.</p>
+        </div>
+
+        {/* Button */}
         <button
           disabled={loading}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#00DA83] to-[#009BB3] text-white px-4 py-2 mt-6 text-sm rounded-lg cursor-pointer"
+          className="w-full py-2 bg-gradient-to-r from-[#00DA83] to-[#009BB3] text-white rounded-md flex items-center justify-center gap-2"
         >
           {loading ? (
-            <span className="w-4 h-4 my-1 rounded-full border-2 border-t-transparent animate-spin"></span>
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
           ) : (
-            <FileText className="w-5" />
+            <FileText className="w-4" />
           )}
-          Get Skill Growth Plan
+          {loading ? "Analyzing..." : "Get Skill Growth Plan"}
         </button>
       </form>
 
-      {/* Right col */}
-      <div className="w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg flex flex-col min-h-96 max-h-[600px]">
-        <div className="flex items-center gap-3">
+      {/* Right: AI Growth Path */}
+      <div className="bg-white shadow-lg rounded-xl p-6 border flex flex-col min-h-[450px] max-h-[600px]">
+        <div className="flex items-center gap-3 mb-4">
           <FileText className="w-5 h-5 text-[#00DA83]" />
-          <h1 className="text-xl font-semibold">Growth Path</h1>
+          <h2 className="text-xl font-semibold">Growth Path</h2>
         </div>
 
         {!content ? (
-          <div className="flex-1 flex justify-center items-center">
-            <div className="text-sm flex flex-col items-center gap-5 text-gray-400">
-              <TrendingUp className="w-9 h-9" />
+          <div className="flex-1 flex items-center justify-center text-center text-gray-400 text-sm">
+            <div className="flex flex-col items-center gap-4 max-w-sm">
+              <TrendingUp className="w-10 h-10" />
               <p>
-                Upload a resume and click "Get Skill Growth Plan" to see which
-                skills you should learn next.
+                Upload your resume and click{" "}
+                <span className="font-medium text-slate-600">Get Skill Growth Plan</span> to see
+                which skills you should learn next.
               </p>
             </div>
           </div>
         ) : (
-          <div className="mt-3 h-full overflow-y-scroll text-sm text-slate-600">
-            <Markdown>{content}</Markdown>
+          <div className="flex-1 overflow-y-auto">
+            <div className="bg-gray-50 p-4 rounded text-sm">
+              <Markdown>{content}</Markdown>
+            </div>
           </div>
         )}
       </div>

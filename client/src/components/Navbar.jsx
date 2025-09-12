@@ -15,7 +15,7 @@ export default function Navbar() {
         className="flex items-center gap-2 text-2xl sm:text-4xl font-bold text-purple-700 select-none"
       >
         <Sparkles className="w-8 h-8 text-purple-700" />
-        GenixAI
+        JobReadify
       </h1>
 
         {user 

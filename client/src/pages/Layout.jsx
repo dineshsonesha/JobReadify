@@ -17,7 +17,7 @@ export default function Layout() {
         className="flex items-center gap-2 text-2xl sm:text-2xl font-bold text-purple-700 select-none"
       >
         <Sparkles className="w-8 h-8 text-purple-700" />
-        GenixAI
+        JobReadify
       </h1>
         {
           siderbar ? <X onClick={() => { setSidebar(false) }} className='w-6 h-6 text-gray-600 sm:hidden' />
