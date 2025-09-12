@@ -16,7 +16,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/ai' element={<Layout />}>
           <Route path='dashboard' element={<Dashboard />} />
-          <Route path='update-resume' element={<UpdateResume />} />
+          <Route path='enhance-resume' element={<UpdateResume />} />
           <Route path='skill-growth' element={<SkillGrowth />} />
           <Route path='resume-builder' element={<ResumeBuilder />} />
           <Route path='review-resume' element={<ReviewResume />} />

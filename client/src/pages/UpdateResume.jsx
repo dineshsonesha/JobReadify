@@ -62,7 +62,7 @@ export default function UpdateResume() {
       >
         <div className="flex items-center gap-3 mb-2">
           <Sparkles className="w-6 text-[#00DA83]" />
-          <h1 className="text-2xl font-semibold">Update Your Resume</h1>
+          <h1 className="text-2xl font-semibold">Enhance Your Resume</h1>
         </div>
 
         {/* Upload */}
@@ -122,7 +122,7 @@ export default function UpdateResume() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <FileText className="w-5 h-5 text-[#00DA83]" />
-            <h2 className="text-xl font-semibold">AI Updated Preview</h2>
+            <h2 className="text-xl font-semibold">AI enhance Preview</h2>
           </div>
 
           {pdfUrl && (

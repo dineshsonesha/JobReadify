@@ -33,12 +33,12 @@ export default function Features() {
       path: "/ai/skill-growth",
     },
     {
-      title: "Update Resume",
+      title: "Enhance Resume",
       description:
         "Enhance your existing resume with AI to highlight achievements, skills, and target roles effectively.",
       icon: TrendingUp,
       bg: { from: "#F59E0B", to: "#D97706" },
-      path: "/ai/update-resume",
+      path: "/ai/enhance-resume",
     },
   ];
 
