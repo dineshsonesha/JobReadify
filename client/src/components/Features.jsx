@@ -1,11 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "@clerk/clerk-react";
+import { useUser, useClerk } from "@clerk/clerk-react";
 import { Sparkles, Target, FileText, TrendingUp, ArrowRight } from "lucide-react";
 
 export default function Features() {
   const navigate = useNavigate();
   const { user } = useUser();
+  const { openSignIn } = useClerk();
 
   const features = [
     {
@@ -42,6 +43,14 @@ export default function Features() {
     },
   ];
 
+  const handleClick = (path) => {
+    if (user) {
+      navigate(path);
+    } else {
+      openSignIn(); // opens Clerk login modal
+    }
+  };
+
   return (
     <div className="px-4 sm:px-20 xl:px-32 my-24">
       {/* Section Header */}
@@ -60,7 +69,7 @@ export default function Features() {
           <div
             key={index}
             className="relative p-8 rounded-2xl bg-white shadow-xl border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer flex flex-col items-center text-center group"
-            onClick={() => user && navigate(feature.path)}
+            onClick={() => handleClick(feature.path)}
           >
             <div
               className="p-6 rounded-xl mb-6"
