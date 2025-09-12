@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Sparkles } from 'lucide-react'
 
 export default function Footer() {
     const navigate = useNavigate();
@@ -12,9 +11,9 @@ export default function Footer() {
                 <div className="md:max-w-96">
                     <h1
                         onClick={() => navigate('/')}
-                        className="flex items-center gap-2 text-2xl sm:text-3xl font-bold text-primary select-none cursor-pointer"
+                        className="flex items-center gap-2 text-2xl sm:text-3xl font-bold bg-gradient-to-br from-black to-purple-300 text-transparent bg-clip-text select-none cursor-pointer"
                     >
-                        <Sparkles className="w-8 h-8 text-primary" />
+                        <img src="/resume_icon.png" alt="Logo" className="w-8 h-8" />
                         JobReadify
                     </h1>
                     <p className="mt-6 text-sm leading-relaxed">
