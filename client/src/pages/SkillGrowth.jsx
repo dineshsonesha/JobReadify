@@ -47,7 +47,7 @@ export default function SkillGrowth() {
         className="bg-white shadow-lg max-h-[600px] rounded-xl p-6 border border-gray-200 space-y-5"
       >
         <div className="flex items-center gap-3">
-          <TrendingUp className="w-6 text-[#00DA83]" />
+          <TrendingUp className="w-6 text-purple-500" />
           <h1 className="text-2xl font-semibold">Skill Growth Suggestions</h1>
         </div>
 
@@ -66,22 +66,19 @@ export default function SkillGrowth() {
 
         {/* Button */}
         <button
+          type="submit"
           disabled={loading}
-          className="w-full py-2 bg-gradient-to-r from-[#00DA83] to-[#009BB3] text-white rounded-md flex items-center justify-center gap-2"
+          className="w-full py-2 bg-gradient-to-r from-[#3C81F6]/80 to-[#9234EA]/80 text-white rounded-md flex items-center justify-center cursor-pointer gap-2"
         >
-          {loading ? (
-            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-          ) : (
-            <FileText className="w-4" />
-          )}
-          {loading ? "Analyzing..." : "Get Skill Growth Plan"}
+          {loading ?
+            <span className='w-4 h-4 my-1 rounded-full border-2 border-t-transparent animate-spin'></span> : <FileText className="w-4" />} Get Skill Growth Plan
         </button>
       </form>
 
       {/* Right: AI Growth Path */}
       <div className="bg-white shadow-lg rounded-xl p-6 border flex flex-col min-h-[450px] max-h-[600px]">
         <div className="flex items-center gap-3 mb-4">
-          <FileText className="w-5 h-5 text-[#00DA83]" />
+          <FileText className="w-5 h-5 text-purple-500" />
           <h2 className="text-xl font-semibold">Growth Path</h2>
         </div>
 

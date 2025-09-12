@@ -320,7 +320,7 @@ export default function ResumeBuilder() {
         className="bg-white shadow-lg rounded-xl p-6 border border-gray-200 space-y-5"
       >
         <div className="flex items-center gap-3 mb-2">
-          <Sparkles className="w-6 text-[#00DA83]" />
+          <Sparkles className="w-6 text-purple-500" />
           <h1 className="text-2xl font-semibold">Build Your Resume</h1>
         </div>
 
@@ -427,10 +427,10 @@ export default function ResumeBuilder() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2 bg-gradient-to-r from-[#00DA83] to-[#009BB3] text-white rounded-md flex items-center justify-center gap-2"
+          className="w-full py-2 bg-gradient-to-r from-[#3C81F6]/80 to-[#9234EA]/80 text-white rounded-md flex items-center justify-center cursor-pointer gap-2"
         >
-          <FileText className="w-4" />
-          {loading ? "Generating..." : "Generate Resume"}
+          {loading ? 
+          <span className='w-4 h-4 my-1 rounded-full border-2 border-t-transparent animate-spin'></span> : <FileText className="w-4" />} Generate Resume
         </button>
       </form>
 
@@ -439,7 +439,7 @@ export default function ResumeBuilder() {
         {/* Header with action buttons */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <FileText className="w-5 h-5 text-[#00DA83]" />
+            <FileText className="w-5 h-5 text-purpule-500" />
             <h2 className="text-xl font-semibold">AI Enhanced Preview</h2>
           </div>
 
@@ -513,7 +513,7 @@ export default function ResumeBuilder() {
 
               {content.experience?.length > 0 && (
                 <div>
-                  <h3 className="font-semibold">Experience / Projects</h3>
+                  <h3 className="font-semibold">Experience</h3>
                   <ul className="list-disc list-inside">
                     {content.experience.map((item, i) => (
                       <li key={i}>{item}</li>
